@@ -79,12 +79,12 @@ def resend_confirmation():
     flash('A new confirmation email has been sent to you by email.')
     return redirect(url_for('main.index'))
 
-@auth.route('/Change your password')
+@auth.route('/Change-password', methods=['GET', 'POST'])
 @login_required
 def change_password():
     form = ChangePasswordForm()
     if form.validate_on_submit():
-        if current_user.verify_password(form.password.data):
+        if current_user.verify_password(form.old_password.data):
             current_user.password = form.password.data
             db.session.add(current_user)
             db.session.commit()
@@ -92,4 +92,4 @@ def change_password():
             return redirect(url_for('main.index'))
         else:
             flash('Invalid password.')
-    return render_template("auth/change_password.html",form=form)
+    return render_template("auth/change_password.html", form=form)
