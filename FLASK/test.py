@@ -55,7 +55,61 @@ class People(object):
         return a + b
 
 
+def my_decorator(func):
+    def wrap(*args, **kwargs):
+        result = func(*args, **kwargs)
+        result += 1
+        return result
+    return wrap
+
+def my_decorator_2(num):
+    def my_decorator(func):
+        def wrap(*args, **kwargs):
+            result = func(*args, **kwargs)
+            result += num
+            return result
+
+        return wrap
+    return my_decorator
+
+@permission_required('finance')
+def add(a, b):
+    result = a + b
+    return result
+
+@permission_required('user')
+def minus(a, b):
+    result = a - b
+    return result
+
+login = False
+
+
+def login_required(func):
+    def wrap(*args, **kwargs):
+        if not login:
+            print('not login')
+            return
+        return func(*args, **kwargs)
+    return wrap
+
+@login_required
+def user():
+    print('user page')
+
+# user = login_required(user)
+
+
+
 if __name__ == '__main__':
+
+    user()
+
+    # add = my_decorator(add)
+    # r = add(1, 2)
+    #
+    #
+    # minus = my_decorator(minus)
     # print('can_fly: ', People.can_fly)
     #
     # zm = People(False, False)
@@ -69,9 +123,9 @@ if __name__ == '__main__':
     # zjw = People(False, False)
     # print('can_fly: ', zjw.can_fly)
 
-    zm = People(False, False, 'zhao', 'meng')
+    # zm = People(False, False, 'zhao', 'meng')
 
-    print(zm.name)
+    # print(zm.name)
 
     # zm.name = 'zhu jiawei'
     # fullname = 'zhu jiawei'
@@ -79,9 +133,9 @@ if __name__ == '__main__':
     # zm.first_name = first_name
     # zm.second_name = second_name
 
-    zm.name = 'zhu jiawei'
-    print('zm first name: ', zm.first_name)
-    print('zm second name: ', zm.second_name)
+    # zm.name = 'zhu jiawei'
+    # print('zm first name: ', zm.first_name)
+    # print('zm second name: ', zm.second_name)
 
     # a = A('b')
     # print(a.get_value())
