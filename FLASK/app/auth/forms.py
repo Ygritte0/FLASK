@@ -57,3 +57,4 @@ class ChangeEmailForm(FlaskForm):
     def validate_email(self, field):
         if User.query.filter_by(email=field.data).first():
             return ValidationError('Email already registered.')
+
